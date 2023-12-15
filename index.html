@@ -1,1 +1,629 @@
-<!--test-->
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="{{ asset('/css/bulma-docs.min.css') }}">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    /*-bulma のスタイルを直接変更-*/
+    .tag {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hero-body {
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+
+    /*-カスタムスタイル-*/
+
+    .title_hero_body {
+      padding: 0 !important;
+    }
+
+    .title_banner_img {
+      object-fit: cover;
+      max-height: 414px;
+      max-width: 896px;
+    }
+
+    .shift_table_outline::-webkit-scrollbar {
+      height: 15px;
+    }
+
+    .shift_table_outline::-webkit-scrollbar-thumb {
+      background-color: #00d1b2;
+      width: 30px;
+    }
+
+    .shift_table_outline::-webkit-scrollbar-track {}
+
+
+    .shift_control_area {
+      max-width: 80vw;
+    }
+
+    .shift_table_outline {
+      margin-bottom: 0px !important;
+    }
+
+    .thead_day_week_td {
+      text-align: center !important;
+    }
+
+    .thead_day_day_td {
+      text-align: center !important;
+    }
+
+    .work_tag {
+      margin: 2px 2px;
+    }
+
+    .tag_text_span {
+      margin-right: 2px;
+    }
+
+    .mem_name_input {
+      width: 100px;
+      padding: calc(.5em - 1px);
+      height: 1.5em;
+    }
+
+    .mem_part_input_outline {
+      height: 26px !important;
+    }
+
+    .mem_part_input {
+      text-align: left;
+      height: 25px !important;
+      width: 60px;
+      margin: 0;
+      padding-top: calc(.5em - 10px) !important;
+      padding-bottom: calc(.5em - 10px) !important;
+      height: 1.5em;
+    }
+  </style>
+</head>
+
+<body class=" dark:bg-slate-800 dark:text-slate-100">
+
+
+
+  <div id="app">
+
+
+    <section class="hero is-medium">
+      <div class="hero-head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a class="navbar-item">
+                <img src="{{ asset('/img/logo_name.png') }}" alt="Logo">
+              </a>
+              <span class="navbar-burger" data-target="navbarMenuHeroC">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </div>
+            <div id="navbarMenuHeroC" class="navbar-menu">
+              <div class="navbar-end">
+                <a class="navbar-item is-active">
+                  Home
+                </a>
+                <a class="navbar-item">
+                  Examples
+                </a>
+                <a class="navbar-item">
+                  Documentation
+                </a>
+                <span class="navbar-item">
+                  <a class="button is-success is-inverted">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Download</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      <div class="hero-body title_hero_body">
+        <div class="container has-text-centered">
+          <figure class="image">
+            <img class="title_banner_img" src="{{ asset('/img/logo_name_banner.png') }}">
+          </figure>
+        </div>
+      </div>
+
+      <div class="hero-foot">
+        <nav class="tabs is-boxed is-fullwidth">
+          <div class="container">
+            <ul>
+              <li class="is-active"><a>Overview</a></li>
+              <li><a>Modifiers</a></li>
+              <li><a>Grid</a></li>
+              <li><a>Elements</a></li>
+              <li><a>Components</a></li>
+              <li><a>Layout</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <section class="hero is-medium">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <p class="subtitle">
+            example
+          </p>
+          <p class="title is-small">
+            shift maker
+          </p>
+
+
+
+          <div class="tile is-ancestor">
+            <div class="tile is-vertical is-12">
+              <div class="tile is-parent is-vertical">
+
+                <div id="work_status_outline" class="tile is-child notification is-primary is-light">
+
+                  <div class="columns is-desktop">
+
+                    <div class="column">
+                      <p>作成したい月</p>
+                      <br>
+                      <input type="month" @change="input_yeur_month_change()" class="input is-small" v-model="input_yeur_month">
+                    </div>
+
+                    <div class="column">
+                      <p>出勤状況の項目</p>
+                      <span v-for="(work, ind) in work_status" :key="work" class="tag is-primary is-normal work_tag">
+                        <span class="tag_text_span">(% work %)
+                          <button class="delete is-small" @click="input_workstutas_remove(ind)"></button>
+                        </span>
+                      </span>
+                      <br>
+                      <br>
+                      <p>項目を追加できます</p>
+                      <input type="text" value="" @keydown.enter="input_workstutas_add" class="column input is-small" placeholder="入力してエンターで追加">
+                      <br>
+                      <p>おすすめタグ クリックで追加</p>
+                      <div>
+                        <span v-for="(example, ind) in work_status_example" :key="work" class="tag is-light is-normal work_tag">
+                          <span class="tag_text_span" @click="work_status_example_add(example)">(% example %)</span>
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="container shift_control_area">
+          <div class="container table-container shift_table_outline">
+            <p>(% input_yeur_month %)</p>
+            <table class="table is-bordered is-striped is-narrow">
+              <thead>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td v-for="(day, index) in days" :key="day" class="thead_day_week_td">
+                    <span v-if="day.Week === '土'" class="has-text-info">(% day.Week %)</span>
+                    <span v-else-if="day.Week === '日'" class="has-text-danger">(% day.Week %)</span>
+                    <span v-else>(% day.Week %)</span>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>名前</td>
+                  <td>日</td>
+                  <td v-for="(day, index) in days" :key="day" class="thead_day_day_td">
+                    <span v-if="day.Week === '土'" class="has-text-info">(% day.Day %)</span>
+                    <span v-else-if="day.Week === '日'" class="has-text-danger">(% day.Day %)</span>
+                    <span v-else>(% day.Day %)</span>
+                  </td>
+                </tr>
+                <tr v-for="(member, index) in member_work_status" key="member" v-bind:data-no="index">
+                  <td v-for="(mem, ind) in member_work_status[index]" key="mem" :data-mem-no="index" :data-mem-day="ind">
+
+                    <input v-if="ind === 0" @change="input_member_change($event, index, ind)" type="text" :value="mem" class="input mem_name_input" placeholder="名前">
+
+                    <div v-else-if="ind === 1" class="select is-small mem_part_input_outline">
+                      <select @change="work_part_change($event, index, ind)" class="mem_part_input">
+                        <option v-for="(part, i) in work_part" :value="i">(% part %)</option>
+                      </select>
+                    </div>
+
+                    <span v-else-if="mem.indexOf('休') !== -1 || mem.indexOf('有給') !== -1" @click="work_status_change($event, index, ind)" class="tag has-tooltip-primary has-background-danger-light	" data-tooltip="Tooltip Text">(% mem %)</span>
+                    <span v-else @click="work_status_change($event, index, ind)" class="tag has-tooltip-primary" data-tooltip="Tooltip Text">(% mem %)</span>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <input type="button" @click="member_add()" class="button is-small" value="人数＋">
+
+          <div class="tile is-ancestor">
+            <div class="tile is-vertical is-12">
+              <div class="tile is-parent is-vertical">
+                <div class="tile is-child notification is-primary is-light">
+
+                  <p>CSV形式でダウンロード</p>
+                  <input type="button" @click="output_action()" class="button is-small" value="DL">
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+  </div>
+
+
+  </section>
+
+
+
+
+  </div>
+
+
+
+
+
+</body>
+<style>
+
+</style>
+
+
+<script type="module">
+  const cl__ = (val) => {
+    console.log(val)
+  }
+
+  import {
+    createApp,
+    ref
+  } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+
+  createApp({
+    setup() {
+
+      // -----------------------------------
+      // 定数定義
+      // -----------------------------------
+      const MONTH_DAYS = ref([365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
+      const WEEKS = ref(["日", "月", "火", "水", "木", "金", "土"])
+
+      //
+      // 年月インプット➤日付、曜日表示
+      // 
+      // 
+      // 指定月のインプット用 0001-01 形式
+      const input_yeur_month = ref((() => {
+        // 初期値として翌月を入れておく 0001-01 形式
+        const nextmonthday_arr = (() => {
+          const rtn = new Date()
+          rtn.setMonth(rtn.getMonth() + 1)
+          return rtn.toLocaleDateString().split("/")
+        })()
+        console.log(nextmonthday_arr[0] + "-" + nextmonthday_arr[1])
+        // 月が 0落ちしている場合 0を付け足す
+        if (nextmonthday_arr[1].length === 1) {
+          nextmonthday_arr[1] = "0" + nextmonthday_arr[1]
+        }
+        return nextmonthday_arr[0] + "-" + nextmonthday_arr[1]
+
+      })())
+
+      //
+      // 開始日と日数を渡すことで、その期間の[[0001-01-01],[0001-01-02]]形式の配列を返す。
+      const days_return = (start_date, daynum) => {
+        return [...Array(daynum)].map((val, ind, arr) => {
+          // 初回は＋１しない
+          if (ind !== 0) start_date.setDate(start_date.getDate() + 1)
+          return {
+            FullDay: start_date.toLocaleDateString(),
+            Yeur: start_date.toLocaleDateString().split("/")[0],
+            Month: start_date.toLocaleDateString().split("/")[1],
+            Day: start_date.toLocaleDateString().split("/")[2],
+            Week: WEEKS.value[start_date.getDay()]
+          }
+        })
+      }
+
+      // @ [[0001-01-01],[0001-01-02]] 配列形式
+      // 指定月の日数を格納、指定月から導き出すのでユーザーから直接の入力は受け付けない。
+      const days = ref((() => {
+        // 初期値
+        // 0001-01-01型に変更しつつ別変数に格納
+        const tmp = input_yeur_month.value + "-01"
+        return days_return(
+          new Date(tmp.split("-0").join("-")),
+          MONTH_DAYS.value[tmp.split("-")[1].split("0").join("")]
+        )
+      })())
+
+
+      // 
+      // 年月変更時発火
+      const input_yeur_month_change = () => {
+        // 0001-01-01型に変更しつつ別変数に格納
+        const tmp = input_yeur_month.value + "-01"
+        days.value = days_return(
+          new Date(tmp.split("-0").join("-")),
+          MONTH_DAYS.value[tmp.split("-")[1].split("0").join("")]
+        )
+        console.log(days.value)
+
+      }
+
+      //
+      // 一人ずつの配列を作成➤v-modelで反映させる。
+      //
+      const member_work_status = ref([])
+
+      // メンバーの追加処理
+      const member_add = () => {
+        const tmp = member_work_status.value
+        const init_mem_days = [...Array(31)].map((val, ind, arr) => {
+          return "〇"
+        })
+
+        tmp.push(["", "週5", ...init_mem_days])
+// 828 1792
+// 414 896
+// 207 448
+        member_work_status.value = []
+        member_work_status.value = tmp
+        console.log(member_work_status.value)
+      }
+
+
+      // -------------------------------
+      // メンバー名称変更
+
+      //
+      // メンバーの名称 member_work_status の各インデックス０番目の変更
+      //
+      const input_member_change = (e, mem_ind, day_ind) => {
+        member_work_status.value[mem_ind][day_ind] = e.target.value
+      }
+
+
+
+      // -------------------------------
+      // 出勤状況関連
+
+      //
+      // 初期状態のステータス、ユーザー側から変更が可能にする
+      //
+      const work_status = ref(["〇", "休", "有給", "希望休"])
+
+      //
+      // シフト押下で出勤or休みに変更
+      //
+      const work_status_change = (e, mem_ind, day_ind) => {
+        if (work_status.value.indexOf(member_work_status.value[mem_ind][day_ind]) === work_status.value.length - 1) {
+          member_work_status.value[mem_ind][day_ind] = work_status.value[0]
+        } else {
+          member_work_status.value[mem_ind][day_ind] = work_status.value[work_status.value.indexOf(member_work_status.value[mem_ind][day_ind]) + 1]
+        }
+        console.log(member_work_status.value)
+      }
+
+      //
+      // ユーザー入力テキストを追加
+      //
+      const input_workstutas_add = (e) => {
+        console.log(e.target.value)
+        // 入力テキストが空でない。かつ、同じ物が配列にない場合➤追加処理
+        if (e.target.value !== "" && work_status.value.indexOf(e.target.value) === -1) {
+          work_status.value.push(e.target.value)
+          // インプットテキストを削除
+          e.target.value = "";
+        } else {
+          alert("その文字は既に追加されています💦")
+        }
+      }
+
+      //
+      // 出勤ステータスタグを削除
+      // インデックス番号を引数で受取る
+      const input_workstutas_remove = (ind) => {
+        work_status.value.splice(ind, 1)
+      }
+
+      //
+      // おすすめタグ
+      // おすすめタグ押下でタ追加
+      const work_status_example = ref(["7h", "6h", "5h", "4h", "午前", "午後", "夜勤", "10時～", "11時～", "12時～"])
+      const work_status_example_add = (example) => {
+        // 入力テキストが空でない。かつ、同じ物が配列にない場合➤追加処理
+        if (work_status.value.indexOf(example) === -1) {
+          work_status.value.push(example)
+        } else {
+          alert("その文字は既に追加されています💦")
+        }
+      }
+
+      // -------------------------------
+      // 出勤常陽自動振り分け機能
+
+      //
+      // 条件を判断する配列
+      //
+      const work_part = ref(["週5", "週4", "週3", "週2", "週1", "月3", "月2", "月1"])
+
+      //
+      // シフト押下で出勤or休みに変更
+      //
+      const work_part_change = (e, mem_ind, day_ind) => {
+        console.log(e, mem_ind, day_ind)
+        member_work_status.value[mem_ind][1] = work_part.value[e.target.value]
+        console.log(member_work_status.value[mem_ind])
+      }
+
+      /*
+      出勤状況変更条件ルール
+
+      １、週何日出勤させるのか？
+      ➤テーブルに対象ごとに出勤日数が設定できる必要あり
+      ➤出勤日の概念　＝週５、４、３、２、１、月３、２、１
+
+      ２、勤務時間の指定はさせるのか？
+      ➤出勤時間の概念＝８時間～１時間（これに関しては出勤条項タグを活用したら良い気もする）
+      ➤↑でタグを活用する場合、簡単に７時間、フル、などの文言を追加できる必要がある。
+
+      ３、固定休の指定はさせるのか？
+      ➤指定させる。ランダム振り分けの際にバッティングしたら他の人を振り分ける処理にする。
+
+      ４、連続出勤日数の考慮はするのか？
+      ➤指定させる、ランダム振り分けのとき連続数が超えたら別の人を当てる
+      ➤全員出勤日数算出➤週当たりの上限日数の算出➤全員が同じ連続数になるよう叩く
+
+
+      処理手順
+      １、ユーザーが日数をインプット
+      ２、自動変更はしないほうがいい
+      ３、振り分けボタンの押下
+      ３ー１、残して振り分け➤現在の入力を維持して整合性がとれるように並び変える。
+      ３－２、全振り分け➤現在の入力を全て白紙にして振り分け直す。
+      ３－３、特定の人のみ変更せず他の人だけ振り分け
+      ４、処理側()基本➤全ての日において出勤人数が平均になるよう振り分けたい
+      ４－１、まず全員の合計出勤可能日数を計算➤一日当たりの平均出勤人数を算出
+      ４－２、ランダムに日付で振り分けていく。
+      ４－３、この時、固定給の場合振り分けず他の人を振り分ける処理が必要
+
+
+
+
+
+      */
+
+
+
+
+      //
+      // 特定の条件に沿って出勤状況を振り分ける
+      //
+
+
+      // -------------------------------
+      // CSV出力関連
+
+      //
+      // DL押下時のイベント 配列をcreate_csv()に渡す
+      //
+      const output_action = () => {
+
+        let data = Array.from(member_work_status.value);
+        // 配列に日付を挿入する
+        data.unshift(["名前", "日", ...days.value.map((val, ind, arr) => {
+          return val.Day
+        })])
+        // 配列に曜日を挿入する
+        data.unshift(["", "曜日", ...days.value.map((val, ind, arr) => {
+          return val.Week
+        })])
+        // 配列に対象月を挿入する
+        data.unshift([input_yeur_month.value])
+
+
+        // CSV出力
+        create_csv(data)
+      }
+
+      //
+      // 配列をCSVで出力
+      //
+      const create_csv = (data) => {
+
+        console.log(data);
+        //作った二次元配列をCSV文字列に直す。
+        let csv_string = "";
+        for (let d of data) {
+          csv_string += d.join(",");
+          csv_string += '\r\n';
+        }
+
+        //ファイル名の指定
+        let file_name = "test.csv";
+
+        //CSVのバイナリデータを作る
+        let blob = new Blob([csv_string], {
+          type: "text/csv"
+        });
+        let uri = URL.createObjectURL(blob);
+
+        //リンクタグを作る
+        let link = document.createElement("a");
+        link.download = file_name;
+        link.href = uri;
+
+        //作ったリンクタグをクリックさせる
+        document.body.appendChild(link);
+        link.click();
+
+        //クリックしたら即リンクタグを消す
+        document.body.removeChild(link);
+        link.remove();
+
+      }
+
+
+
+      return {
+        MONTH_DAYS,
+        days,
+        input_yeur_month,
+        input_yeur_month_change,
+        work_status,
+        work_status_example,
+        work_status_example_add,
+        work_status_change,
+        work_part,
+        work_part_change,
+        member_work_status,
+        input_member_change,
+        input_workstutas_add,
+        input_workstutas_remove,
+        member_add,
+        output_action
+      }
+    },
+    mounted() {
+      console.log("mounted")
+      window.onload = () => {
+        console.log("window.onload")
+      }
+    },
+    delimiters: ['(%', '%)']
+  }).mount('#app')
+</script>
