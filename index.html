@@ -27,6 +27,7 @@
       object-fit: cover;
       max-height: 414px;
       max-width: 896px;
+      margin: 0 auto;
     }
 
     .shift_table_outline::-webkit-scrollbar {
@@ -110,21 +111,21 @@
             </div>
             <div id="navbarMenuHeroC" class="navbar-menu">
               <div class="navbar-end">
-                <a class="navbar-item is-active">
+                <a class="navbar-item is-active" href="#">
                   Home
                 </a>
-                <a class="navbar-item">
-                  Examples
+                <a class="navbar-item" href="#">
+                  Example
                 </a>
-                <a class="navbar-item">
-                  Documentation
+                <a class="navbar-item" href="#">
+                  Docs
                 </a>
                 <span class="navbar-item">
                   <a class="button is-success is-inverted">
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
-                    <span>Download</span>
+                    <span>Sign in</span>
                   </a>
                 </span>
               </div>
@@ -135,7 +136,7 @@
 
       <div class="hero-body title_hero_body">
         <div class="container has-text-centered">
-          <figure class="image">
+          <figure class="image is-centered">
             <img class="title_banner_img" src="logo_name_banner.png">
           </figure>
         </div>
@@ -145,12 +146,11 @@
         <nav class="tabs is-boxed is-fullwidth">
           <div class="container">
             <ul>
-              <li class="is-active"><a>Overview</a></li>
-              <li><a>Modifiers</a></li>
-              <li><a>Grid</a></li>
-              <li><a>Elements</a></li>
-              <li><a>Components</a></li>
-              <li><a>Layout</a></li>
+              <li class="is-active"><a href="#">Shift Maker</a></li>
+              <li><a href="#">Converter</a></li>
+              <li><a href="#">Compact Message</a></li>
+              <li><a href="#">Elements</a></li>
+              <li><a href="#">Browser Addon</a></li>
             </ul>
           </div>
         </nav>
@@ -170,7 +170,7 @@
 
 
           <div class="tile is-ancestor">
-            <div class="tile is-vertical is-12">
+            <div class="tile is-vertical is-6">
               <div class="tile is-parent is-vertical">
 
                 <div id="work_status_outline" class="tile is-child notification is-primary is-light">
@@ -182,6 +182,21 @@
                       <br>
                       <input type="month" @change="input_yeur_month_change()" class="input is-small" v-model="input_yeur_month">
                     </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="tile is-vertical is-6">
+              <div class="tile is-parent is-vertical">
+
+                <div id="work_status_outline" class="tile is-child notification is-primary is-light">
+
+                  <div class="columns is-desktop">
 
                     <div class="column">
                       <p>出勤状況の項目</p>
@@ -397,9 +412,9 @@
         })
 
         tmp.push(["", "週5", ...init_mem_days])
-// 828 1792
-// 414 896
-// 207 448
+        // 828 1792
+        // 414 896
+        // 207 448
         member_work_status.value = []
         member_work_status.value = tmp
         console.log(member_work_status.value)
