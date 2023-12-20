@@ -12,6 +12,11 @@
       user-select: none;
     }
 
+    .tag:hover {
+      transform: scale(1.1, 1.1);
+      transition: 0.2s all;
+    }
+
     .hero-body {
       padding-top: 2rem !important;
       padding-bottom: 2rem !important;
@@ -85,6 +90,12 @@
       padding-bottom: calc(.5em - 10px) !important;
       height: 1.5em;
     }
+
+    .status_button:hover {
+      transform: scale(1.2, 1.2);
+      transition: 0.3s all;
+      border: 1px solid #00d1b2 !important;
+    }
   </style>
 </head>
 
@@ -101,7 +112,7 @@
           <div class="container">
             <div class="navbar-brand">
               <a class="navbar-item">
-                <img src="logo_name.png" alt="Logo">
+                <img src="{{ asset('/img/logo_name.png') }}" alt="Logo">
               </a>
               <span class="navbar-burger" data-target="navbarMenuHeroC">
                 <span></span>
@@ -137,7 +148,7 @@
       <div class="hero-body title_hero_body">
         <div class="container has-text-centered">
           <figure class="image is-centered">
-            <img class="title_banner_img" src="logo_name_banner.png">
+            <img class="title_banner_img" src="{{ asset('/img/logo_name_banner.png') }}">
           </figure>
         </div>
       </div>
@@ -266,8 +277,8 @@
                       </select>
                     </div>
 
-                    <span v-else-if="mem.indexOf('休') !== -1 || mem.indexOf('有給') !== -1" @click="work_status_change($event, index, ind)" class="tag has-tooltip-primary has-background-danger-light	" data-tooltip="Tooltip Text">(% mem %)</span>
-                    <span v-else @click="work_status_change($event, index, ind)" class="tag has-tooltip-primary" data-tooltip="Tooltip Text">(% mem %)</span>
+                    <span v-else-if="mem.indexOf('休') !== -1 || mem.indexOf('有給') !== -1" @click="work_status_change($event, index, ind)" class="tag button is-light has-background-danger-light	status_button" data-tooltip="Tooltip Text">(% mem %)</span>
+                    <span v-else @click="work_status_change($event, index, ind)" class="tag button is-light status_button" data-tooltip="Tooltip Text">(% mem %)</span>
 
                   </td>
                 </tr>
@@ -396,13 +407,22 @@
           MONTH_DAYS.value[tmp.split("-")[1].split("0").join("")]
         )
         console.log(days.value)
+        // 月ごとに日数分配列をけずる
+        member_work_status_render()
 
       }
 
       //
       // 一人ずつの配列を作成➤v-modelで反映させる。
       //
-      const member_work_status = ref([])
+      const member_work_status = ref((() => {
+        const tmp = []
+        const init_mem_days = [...Array(31)].map((val, ind, arr) => {
+          return "〇"
+        })
+        tmp.push(["", "週5", ...init_mem_days])
+        return tmp
+      })())
 
       // メンバーの追加処理
       const member_add = () => {
@@ -418,8 +438,35 @@
         member_work_status.value = []
         member_work_status.value = tmp
         console.log(member_work_status.value)
-      }
 
+        // 月ごとに日数分配列をけずる
+        member_work_status_render()
+      }
+      // 
+      // 月ごとに日数分配列をけずる
+      const member_work_status_render = () => {
+        const tmp = member_work_status.value
+
+        // 一旦MAXまで配列を入れる
+        tmp.forEach((val, ind, arr) => {
+          for (let i = 0; i < 3; i++) {
+            if (days.value.length + 2 === val.length) return
+            val.push("〇")
+          }
+        })
+        // MAX以上で不要な配列があれば削除する
+        tmp.forEach((val, ind, arr) => {
+          console.log(days.value.length + 2, val.length)
+          if (days.value.length + 2 === val.length) return
+          if (days.value.length + 2 < val.length) {
+            val.splice(days.value.length + 2, val.length - (days.value.length + 2))
+          }
+        })
+        // 代入
+        member_work_status.value = []
+        member_work_status.value = tmp
+        console.log(member_work_status.value)
+      }
 
       // -------------------------------
       // メンバー名称変更
@@ -472,13 +519,17 @@
       // 出勤ステータスタグを削除
       // インデックス番号を引数で受取る
       const input_workstutas_remove = (ind) => {
+        if (work_status.value.length === 1) {
+          alert("これ以上は削除できません💦先に追加をしましょう！")
+          return
+        }
         work_status.value.splice(ind, 1)
       }
 
       //
       // おすすめタグ
       // おすすめタグ押下でタ追加
-      const work_status_example = ref(["7h", "6h", "5h", "4h", "午前", "午後", "夜勤", "10時～", "11時～", "12時～"])
+      const work_status_example = ref(["7h", "6h", "5h", "4h", "午前", "午後", "夜勤", "10時～", "11時～", "12時～", "✕", "〇", "休", "有給", "希望休"])
       const work_status_example_add = (example) => {
         // 入力テキストが空でない。かつ、同じ物が配列にない場合➤追加処理
         if (work_status.value.indexOf(example) === -1) {
